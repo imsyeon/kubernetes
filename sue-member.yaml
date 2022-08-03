@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sue-member-app
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: sue-member-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sue-member-app
+    spec:
+      containers:
+      - name: sue-member-app
+        image: paastaccc/jenkins:latest
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 500m
+            memory: 200Mi
+        ports:
+        - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sue-member-app-service
+spec:
+  ports:
+  ports:
+    - port: 8083
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: sue-member-app
+  type: NodePort
